@@ -1,0 +1,8 @@
+{
+  "short_name": "Daily Glow",
+  "name": "Daily Glow Tracker",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ec4899",
+  "background_color": "#ffffff"
+}
