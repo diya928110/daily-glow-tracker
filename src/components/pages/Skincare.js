@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { getToday } from '../../utils/dateUtils';
+
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 import Input from '../UI/Input';
 import Checkbox from '../UI/Checkbox';
 import Calendar from '../UI/Calendar';
-import Modal from '../UI/Modal';
 
 const Skincare = () => {
   const [data, setData] = useLocalStorage('dailyGlow-skincare', {});
@@ -16,18 +16,19 @@ const Skincare = () => {
 
   const today = getToday();
   const selectedDateStr = selectedDate.toISOString().split('T')[0];
+
   const dayData = data[selectedDateStr] || {
     morningRoutine: false,
     eveningRoutine: false,
     concerns: [],
     notes: '',
-    products: []
+    products: [],
   };
 
   const updateDayData = (updates) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
-      [selectedDateStr]: { ...dayData, ...updates }
+      [selectedDateStr]: { ...dayData, ...updates },
     }));
   };
 
@@ -37,30 +38,33 @@ const Skincare = () => {
 
   const addConcern = () => {
     if (newConcern.trim()) {
-      updateDayData({ 
-        concerns: [...dayData.concerns, { 
-          id: Date.now(), 
-          text: newConcern.trim(), 
-          severity: 1,
-          date: selectedDateStr
-        }] 
+      const newEntry = {
+        id: Date.now(),
+        text: newConcern.trim(),
+        severity: 1,
+        date: selectedDateStr,
+      };
+
+      updateDayData({
+        concerns: [...dayData.concerns, newEntry],
       });
+
       setNewConcern('');
       setShowModal(false);
     }
   };
 
   const removeConcern = (id) => {
-    updateDayData({ 
-      concerns: dayData.concerns.filter(concern => concern.id !== id) 
+    updateDayData({
+      concerns: dayData.concerns.filter((c) => c.id !== id),
     });
   };
 
   const updateSeverity = (id, severity) => {
-    updateDayData({ 
-      concerns: dayData.concerns.map(concern => 
-        concern.id === id ? { ...concern, severity } : concern
-      ) 
+    updateDayData({
+      concerns: dayData.concerns.map((c) =>
+        c.id === id ? { ...c, severity } : c
+      ),
     });
   };
 
@@ -68,7 +72,15 @@ const Skincare = () => {
     updateDayData({ notes });
   };
 
-  const concerns = ['Acne', 'Dryness', 'Purging', 'Redness', 'Oily T-zone', 'Dark spots', 'Fine lines'];
+  const concerns = [
+    'Acne',
+    'Dryness',
+    'Purging',
+    'Redness',
+    'Oily T-zone',
+    'Dark spots',
+    'Fine lines',
+  ];
 
   return (
     <div className="space-y-6">
@@ -88,13 +100,14 @@ const Skincare = () => {
             selectedDate={selectedDate}
             onDateSelect={setSelectedDate}
             markedDates={Object.keys(data).reduce((acc, date) => {
-              acc[date] = data[date].morningRoutine || data[date].eveningRoutine;
+              acc[date] =
+                data[date].morningRoutine || data[date].eveningRoutine;
               return acc;
             }, {})}
           />
         </div>
 
-        {/* Daily Routines */}
+        {/* Routine and Notes */}
         <div className="lg:col-span-2 space-y-6">
           <Card title="Daily Routines">
             <div className="space-y-4">
@@ -111,21 +124,27 @@ const Skincare = () => {
             </div>
           </Card>
 
-          {/* Skin Concerns */}
           <Card title="Skin Concerns">
             {dayData.concerns.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm">No concerns logged for this day</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                No concerns logged for this day
+              </p>
             ) : (
               <div className="space-y-3">
-                {dayData.concerns.map(concern => (
-                  <div key={concern.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                {dayData.concerns.map((concern) => (
+                  <div
+                    key={concern.id}
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                  >
                     <div className="flex-1">
                       <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                         {concern.text}
                       </span>
                       <div className="flex items-center mt-1 space-x-2">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">Severity:</span>
-                        {[1, 2, 3, 4, 5].map(level => (
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          Severity:
+                        </span>
+                        {[1, 2, 3, 4, 5].map((level) => (
                           <button
                             key={level}
                             onClick={() => updateSeverity(concern.id, level)}
@@ -151,7 +170,6 @@ const Skincare = () => {
             )}
           </Card>
 
-          {/* Notes */}
           <Card title="Daily Notes">
             <textarea
               value={dayData.notes}
@@ -164,7 +182,7 @@ const Skincare = () => {
         </div>
       </div>
 
-      {/* Add Concern Modal */}
+      {/* Modal */}
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
@@ -176,7 +194,7 @@ const Skincare = () => {
               Quick Select:
             </label>
             <div className="grid grid-cols-2 gap-2">
-              {concerns.map(concern => (
+              {concerns.map((concern) => (
                 <Button
                   key={concern}
                   variant="outline"
@@ -188,14 +206,14 @@ const Skincare = () => {
               ))}
             </div>
           </div>
-          
+
           <Input
             label="Custom Concern"
             value={newConcern}
             onChange={(e) => setNewConcern(e.target.value)}
             placeholder="Enter custom concern..."
           />
-          
+
           <div className="flex space-x-2">
             <Button onClick={addConcern} className="flex-1">
               Add Concern
