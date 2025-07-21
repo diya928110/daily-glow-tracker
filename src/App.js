@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useDarkMode } from './hooks/useDarkMode';
 import Navbar from './components/Layout/Navbar';
 import Sidebar from './components/Layout/Sidebar';
-import Skincare from './pages/Skincare';
-import Haircare from './pages/Haircare';
-import Supplements from './pages/Supplements';
-import Study from './pages/Study';
-import Bodycare from './pages/Bodycare';
-import Exercise from './pages/Exercise';
+import Skincare from './pages/Skincare.js';
+import Haircare from './pages/Haircare.js';
+import Supplements from './pages/Supplements.js';
+import Study from './pages/Study.js';
+import Bodycare from './pages/Bodycare.js';
+import Exercise from './pages/Exercise.js';
 
 const pages = {
   skincare: Skincare,
