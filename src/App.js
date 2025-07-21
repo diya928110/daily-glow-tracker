@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useDarkMode } from './hooks/useDarkMode';
-import Navbar from './components/Layout/Navbar';
-import Sidebar from './components/Layout/Sidebar';
-import Skincare from './pages/Skincare.js';
-import Haircare from './pages/Haircare.js';
-import Supplements from './pages/Supplements.js';
-import Study from './pages/Study.js';
-import Bodycare from './pages/Bodycare.js';
-import Exercise from './pages/Exercise.js';
+import { useDarkMode } from './hooks/useDarkMode.js';
+import Navbar from './components/Layout/Navbar.js';
+import Sidebar from './components/Layout/Sidebar.js';
+import Haircare from './components/pages/Haircare.js';
+import Supplements from './components/pages/Supplements.js';
+import Study from './components/pages/Study.js';
+import Bodycare from './components/pages/Bodycare.js';
+import Exercise from './components/pages/Exercise.js';
 
 const pages = {
   skincare: Skincare,
